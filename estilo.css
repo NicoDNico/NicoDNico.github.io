@@ -1,0 +1,196 @@
+
+
+.level {
+    width: 100%;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.pagecontainer{
+width: 100%;
+display: flex;
+flex-direction: column;
+min-height: 100%;
+}
+
+.barraleft{
+    height: 10%;
+    width: 100%;
+    background-color: rgb(26, 25, 25);
+    padding: 15px 10px 10px 10px ;
+    margin-bottom: 40px;
+    margin-right: 1rem ;
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 4;
+}
+.shadowred{
+    box-shadow: 0px 0px 20px red;
+}
+.shadowgreen{
+    box-shadow: 0 0 20px green;
+}
+
+.btna{
+    /* border: 6px solid rgb(51, 49, 49); */
+    color: rgb(121, 121, 121);
+    border-radius: 15px;
+    transition-duration: 0.2s;
+    margin: 5px 10px;
+}
+.btna:hover{
+    transform: scale(110%);
+    color: #fff;
+}
+
+.info{
+    margin: 5px;
+    width: 95%;
+    height: 400px;
+    color: black;
+    position: absolute;
+    z-index: 1;
+    transition: opacity  0.3s ;
+    opacity: 0%;
+}
+
+.poster{
+    background-color: black;
+    margin: 1%;
+    width: 230px;
+    min-height: 420px ;
+    max-height: 450px;
+    color: white;
+    border: 5px solid rgb(51, 49, 49);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition-duration: 0.2s;
+    border-radius: 10px;
+    
+}
+
+.poster:hover{
+    transform: scale(130%);
+    z-index: 5;
+}
+
+.poster:hover  .info{
+   opacity: 100%;
+   background-color: rgba(119, 119, 119, 0.8);
+
+}
+
+.poster:hover .titulo {
+    color: black;
+}
+
+.titulo{
+    color: #fff;
+    border: 2px solid white;
+    margin: 4%;
+    text-align: center;
+    max-width: 300px;
+    max-height: 1em;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+img{
+    max-width: 230px;
+    max-height: 340px;
+}
+
+.basic-grid{
+    display: grid;
+    gap: 1rem;
+    margin-left: 5%;
+    margin-right: 0;
+    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+}
+
+ input{
+     display: none;
+ }
+
+ label{
+     cursor: pointer;
+
+ }
+
+ .parent {
+    position: relative;
+    width: 90%;
+    margin: 2%;
+  }
+  .one, .two {
+    position: absolute;
+    height: 2em;
+    width: 65%;
+    z-index: 0;
+    margin: 0 5% 4px 5%;
+  }
+  .one {
+    left: 0;
+    bottom: 0;
+background-color: blue;
+    -webkit-clip-path: polygon(0 0, 100% 0%, 50% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0%, 50% 100%, 0% 100%); 
+  }
+  .two {
+    right: 0;
+    bottom: 0;
+    background-color: red;
+    -webkit-clip-path: polygon(50% 0, 100% 0%, 100% 100%, 0% 100%);
+    clip-path: polygon(50% 0, 100% 0%, 100% 100%, 0% 100%); 
+    text-align: right;
+  }
+  .twoinside{
+    overflow: hidden;
+    margin-top: 0;
+    margin-left: 50px;
+  }
+
+  .Dcontainer{
+    display: grid;
+    gap: 1rem;
+    margin-left: 5%;
+    margin-right: 0;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+  }
+  .Downloader{
+    display: flex;
+    width: 300px;
+    height: 200px;
+    background-color:rgb(26, 25, 25) ;
+    margin: 5%;
+    border: 2PX SOLID WHITE;
+    border-radius: 20px;
+  }
+  .Dinside{
+    position: absolute;
+    top: -3px;
+    left: -4px;
+    height: 104%;
+    width: 103%;
+    background-color: rgb(26, 25, 25);
+    border-radius: 70px;
+    color: #fff;
+    text-align: center;
+  }
+  .Doutside{
+    position: relative;
+    background-color:rgb(26, 25, 25) ;
+    border: 2px solid white ;
+    top: 10px;
+    left: 15px;
+    height: 88%;
+    width: 88%;
+    border-radius: 30px;
+
+  }

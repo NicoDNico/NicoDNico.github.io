@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>App</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body style="margin: 0px; padding: 0%; background-color: black;">
+    <div class="pagecontainer">
+        <div class="barraleft" id="topbar">
+            <h2 id="btn" type="button" class="box btna" >Cargar Csv</h2>
+            <h2 id="testbtn"  class="btna"> Cargar other</h2>
+            <label for='csvFile' > 
+                <h2 class="btna">Your csv file</h2>
+                <input class="btna" multiple="multiple" type="file" id="csvFile" accept=".csv" />
+            </label>
+            <label for='csvFile2' > 
+                <h2 class="btna">Csv file to compare</h2>
+                <input class="btna" multiple="multiple" type="file" id="csvFile2" accept=".csv" />
+            </label>
+            <h2 id="comparatorid"  class="btna"> compare </h2>
+            <h2 class="btna" onclick="location.href = './about.html'">about</h2>
+            
+        </div>
+            <div class='Dcontainer' ondragenter="">
+                <div class="Downloader">
+                    <div class="Doutside">
+                            <div class="Dinside">
+                                <h3 style="margin-top: 25% ; font-size: 30px ;">Upload your file</h3>
+                            </div>
+                        </div>
+                    </div>
+                <div class="Downloader">
+                    <div class="Doutside">
+                            <div class="Dinside">
+                               <h3 style="margin-top: 25% ; font-size: 30px ;"> Upload the file to compare with</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        <divs >
+            <section id="ImgList" class="basic-grid">
+                <div class="poster">
+                    <h4 class="info">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non lectus metus. Mauris magna dui, eleifend sit amet felis non, euismod consectetur purus. Duis mi eros, commodo ut porta lobortis, imperdiet eget nibh. Donec at auctor orci. Proin laoreet id magna sed porta. Fusce ullamcorper dapibus nisi eu vulputate. Vestibulum felis metus, ornare vitae consequat ut, pellentesque sed augue. Morbi quis nisi lobortis, laoreet risus nec, volutpat arcu. Nunc convallis et neque at congue. Sed pharetra diam lacus, non hendrerit neque congue sed. Cras gravida mattis tortor ac maximus.
+                    </h4>
+                    <div class="titulo">"Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb"</div>
+                    <img src="https://m.media-amazon.com/images/M/MV5BMTY5MzYzNjc5NV5BMl5BanBnXkFtZTYwNTUyNTc2._V1_SX300.jpg"></img> 
+                    <div>
+                    <div class="one">Your Rating</div>
+                    <div class="two">
+                        <h5 style="overflow: hidden; margin-top: 0; margin-left: 50px;">otheraaaaaaaa rating</h5>
+                    </div>
+                </div>
+                </div>
+            </section>
+        </divs>
+    </div>
+      <script src="_bundle.js" >
+      </script>
+</body>
+</html>

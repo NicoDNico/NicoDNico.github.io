@@ -1,0 +1,25 @@
+{
+  "name": "testproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --mode production -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.11",
+    "csv": "^6.1.0",
+    "papaparse": "^5.3.2",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
+  },
+  "browser": {
+    "fs": false
+  },
+  "devDependencies": {
+    "buffer": "^6.0.3"
+  }
+}

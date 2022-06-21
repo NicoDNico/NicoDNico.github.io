@@ -18,7 +18,7 @@ const papaconfig = {header:true};
 
 const idioma = 'en-us';
 
-const apikey = 'api_key=5625c97a465184ed5c6509459a4505fb';
+const apikey = 'something';
 
 const comparatorid = document.getElementById('comparatorid');
 

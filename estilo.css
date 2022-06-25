@@ -37,9 +37,7 @@ min-height: 100%;
 }
 
 .btna{
-    /* border: 6px solid rgb(51, 49, 49); */
     color: rgb(121, 121, 121);
-    border-radius: 15px;
     transition-duration: 0.2s;
     margin: 5px 10px;
 }
@@ -171,6 +169,11 @@ background-color: blue;
     margin: 5%;
     border: 2PX SOLID WHITE;
     border-radius: 20px;
+    transition-duration: 0.2s;
+  }
+  .Downloader:-moz-drag-over{
+    transform: scale(110%);
+    color: #fff;
   }
   .Dinside{
     position: absolute;

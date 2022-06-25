@@ -14,25 +14,36 @@ var ratinother = [];
 var CsvDataParsed = 'parse 1 empty';
 var CsvDataOther = 'parsed 2 empty';
 
+var dropfile = [];
+var dropfile2 = [];
+
 const papaconfig = {header:true};
 
-const idioma = 'en-us';
-
-const apikey = 'something';
-
-const comparatorid = document.getElementById('comparatorid');
-
-const testbtn = document.getElementById("testbtn");
+var check1 = false;
+var check2 = false;
+const apikey = 'api_key=5625c97a465184ed5c6509459a4505fb';
 
 const btn = document.getElementById("btn");
 
 const topbar = document.getElementById("topbar");
 
-const inputfile = document.getElementById('csvFile');
+const test = document.getElementById("test");
+
+
 
 
 async function  DataofMovies(){
   let datalenght = Object.keys(CsvDataParsed).length;
+  CsvDataParsed.sort(function(a, b){
+    if (a.Rating<b.Rating){
+      return 1;
+    }
+    if (a.Rating>b.Rating){
+      return -1;
+    }
+    return 0;
+  });
+  console.log(CsvDataParsed);
     for(let i = 0; i < datalenght -1 ; i++){
       let objdata = Object.entries(CsvDataParsed[i]);
         if(objdata[4][1]>=4){
@@ -62,6 +73,9 @@ async function  DataofMovies2(csvdata){
 btn.addEventListener("pointerdown", async function (e) {
     e.preventDefault
     let input = csvFile.files[0];
+    if(check1 == true){
+      input = dropfile;
+    }
     let reader = new FileReader(); 
     reader.onload = async function (input) {
       let text = input.target.result;
@@ -70,31 +84,21 @@ btn.addEventListener("pointerdown", async function (e) {
       CsvDataParsed = csvtext;
       console.log(await DataofMovies(csvtext));
       console.log(names.length);
-      await csvreader();
+      await csvreader2();
       await adddiv(); 
       await comparator();     
-      
+       
     };
     reader.readAsText(input);
 });
 
-// saves data of secondary csv
-testbtn.addEventListener("pointerdown", async function (e) {
-  e.preventDefault
-  let input = csvFile2.files[0];
-  let reader = new FileReader();
-  reader.onload = async function (input) {
-    let text = input.target.result;
-    let output = Papa.parse(text,papaconfig);
-    let csvtext = output.data;
-    CsvDataParsed = csvtext;
-    console.log(await DataofMovies2(csvtext) );   
-  };
-  reader.readAsText(input);
-});
 
-async function csvreader(){
-  let input = csvFile2.files[0];
+
+async function csvreader2(){
+  let input = csvFile.files[0];
+  if(check2 == true){
+    input = dropfile2;
+  }
   let reader = new FileReader();
   reader.onload = async function (input) {
     let text = input.target.result;
@@ -105,8 +109,9 @@ async function csvreader(){
   };
   reader.readAsText(input);
 };
-// This script adds divs to the page
+// This scripts modifies and adds divs to the page
 async function adddiv(){
+  removedivs();
   const divt = document.createElement('div');
   divt.className = 'titulo';
   divt.innerHTML = '';
@@ -159,6 +164,13 @@ async function adddiv(){
   }
   topbar.className = 'barraleft shadowgreen ' ;
 }
+function removedivs(){
+ btn.style.display = 'none';
+ dropother.style.display = 'none';
+ dropyourself.style.display = 'none';
+ document.getElementById("examplePoster").style.display = 'none';
+
+}
 // api requests start here
 
 async function tmdbapi(x){
@@ -178,7 +190,6 @@ async function tmdbapi(x){
 
 // compare ratins  start here
 
-comparatorid.addEventListener('pointerdown', comparator);
 
 function comparator(){
   console.log('comparator: '+namesother);
@@ -207,4 +218,52 @@ function comparator(){
 };
 
 
+// page maker
 
+test.addEventListener("pointerdown", pagemaker);
+let blob = "<body>Hola</body>"
+function pagemaker(){
+  console.log("test")
+   let a = new File(blob,testpage.txt,{
+    type: "Text/plain",
+  });
+  window.open(a);
+  
+};
+
+// drop box. 
+
+const dropyourself = document.getElementById("downloadyourself");
+const dropother = document.getElementById("downloadother");
+
+dropyourself.addEventListener("dragover", e =>{
+  e.preventDefault();
+  console.log('dragtest')
+});
+
+dropyourself.addEventListener("drop", function(e) {
+  e.preventDefault();
+  dropfile = e.dataTransfer.files[0];
+  console.log(dropfile);
+  check1 = true;
+});
+
+dropother.addEventListener("dragover", e =>{
+  e.preventDefault();
+  console.log('dropothertest')
+});
+dropother.addEventListener("drop",function(e) {
+  e.preventDefault();
+  dropfile2 = e.dataTransfer.files[0];
+  console.log(dropfile2);
+
+  check2 = true;
+ 
+});
+
+document.addEventListener("dragover", event=>{
+  event.preventDefault();
+});
+document.addEventListener("drop", event=>{
+  event.preventDefault();
+});

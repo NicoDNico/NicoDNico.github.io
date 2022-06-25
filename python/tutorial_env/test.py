@@ -65,7 +65,7 @@ for i in range (3):
         movies_rating_list.append(movie_rating)
     moviesinfo = pd.DataFrame({'Date': boilerdate,'Name': movies_titles,'Year': boilerdate,'movies-link':movies_list, 'Rating':movies_rating_list})
     print(moviesinfo)
-    moviesinfo.to_csv('moviesinfo.csv', index=False)
+    moviesinfo.to_csv('C:/Users/nicod/Documents/GitHub/Future-supercool-thingy/python/tutorial_env/moviesinfo.csv', index=False)
 
 
 

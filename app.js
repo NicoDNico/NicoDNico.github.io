@@ -320,8 +320,8 @@ checkbox.addEventListener("change", function(){
     dropyourself.style.display = 'none';
     userfile.style.display = 'none';
     comparefile.style.display = 'none';
-    textboxContainer.style.display = 'block';
-    TextBoxOtherContainer .style.display = 'block';
+    textboxContainer.style.display = 'flex';
+    TextBoxOtherContainer .style.display = 'flex';
     check = true;
   }
   else{

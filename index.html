@@ -11,26 +11,49 @@
     <div class="pagecontainer">
         <div class="barraleft" id="topbar">
             <h3 id="test" class="btna">Test</h3>
-            <h3 id="btn" class="btna" >Cargar Csv</h3>
+            <h3 id="btn" class="btna" >Load comparator</h3>
             <label for='csvFile' > 
-                <h3 class="btna">Your csv file</h3>
-                <input class="btna" multiple="multiple" type="file" id="csvFile" accept=".csv" />
+                <h3 class="btna" id="userfile" >Your csv file</h3>
+                <input style="display:none ;" class="btna" multiple="multiple" type="file" id="csvFile" accept=".csv" />
             </label>
             <label for='csvFile2' > 
-                <h3 class="btna">Csv file to compare</h3>
-                <input class="btna" multiple="multiple" type="file" id="csvFile2" accept=".csv" />
+                <h3 class="btna" id="comparefile">Csv file to compare</h3>
+                <input class="btna" style="display:none ;" multiple="multiple" type="file" id="csvFile2" accept=".csv" />
             </label>
             <h3 class="btna" onclick="location.href = './about.html'">about</h3>
             
         </div>
+        <div style="display: flex; color: white; justify-content: center;">
+            <h1 style="margin: 15px ;">Csv File mode</h1>
+            <label class="switch" style="margin-top: 20px;">
+                <input type="checkbox" id="switch">
+                <span class="slider round"></span>
+            </label>
+            <h1 style="margin: 15px ;">Id mode</h1>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <div class="titulo" id="searchBoxContainer" style="display: none;" >
+                    <label for="name">Your Letterboxd ID:</label>
+                        <input type="text" id="search" name="name" size="10">    
+                    
+            </div>
+            <div class="titulo" id="searchBoxOtherContainer" style="display: none;" >
+                <label for="name">Letterboxd ID to compare:</label>
+                    <input type="text" id="searchOther"  name="name" size="10">    
+                
+            </div>
+        </div>
             <div class='Dcontainer' >
-                    <div class="Downloader" id="downloadyourself">
-                        <div class="Doutside">
-                                <div class="Dinside">
-                                    <h3 style="margin-top: 25% ; font-size: 30px ;">Upload your file</h3>
+                    <label for="csvFile">
+                        <div class="Downloader" id="downloadyourself">
+                            <div class="Doutside">
+                                    <div class="Dinside">
+                                        <h3 style="margin-top: 25% ; font-size: 30px ;">Upload your file</h3>
+                                    </div>
                                 </div>
-                            </div>
-                    </div>
+                        </div>
+                    </label>
+                    <label for='csvFile2' >
                         <div class="Downloader" id="downloadother" >
                             <div class="Doutside" >
                                 <div class="Dinside">
@@ -38,6 +61,7 @@
                                 </div>
                             </div>
                         </div>
+                    </label>
                 </div>
             </div> 
         <divs >
@@ -58,10 +82,7 @@
             </section>
         </divs>
     </div>
-<<<<<<< HEAD
       <script src="./bundle.js"></script>
-=======
->>>>>>> 79a93a607c4d8f36b41d2b85275b0847c4aea326
 </body>
-<script src="./_bundle.js"></script>
+
 </html>

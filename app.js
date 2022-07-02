@@ -38,7 +38,7 @@ const comparefile = document.getElementById("comparefile");
 var moviesshared = [];
 var moviesnotshared = [];
 
-
+// retrieves the #name #rating and link of the movies from the csv given by the user or the API
 async function  DataofMovies(CVSdata){
   let datalenght = Object.keys(CVSdata).length;
   if(check == false){
@@ -53,6 +53,7 @@ async function  DataofMovies(CVSdata){
   })};
     for(let i = 0; i < datalenght -1 ; i++){
       let objdata = Object.entries(CVSdata[i]);
+      // check is used to see if its in csv or id mode
       if(check == false){
         if(objdata[4][1]>=4){
         names.push(objdata[1][1]);
@@ -65,6 +66,7 @@ async function  DataofMovies(CVSdata){
           if(objdata[4][1]>=7){
           names.push(objdata[1][1]);
           ratin.push(objdata[4][1]);
+          links.push(objdata[3][1]);
         }
         else{
         }
@@ -72,6 +74,7 @@ async function  DataofMovies(CVSdata){
     console.log('test DataofMovies');
   return [names, ratin]
 }
+// retreves rating and name of a movies from the datagiven to the other
 async function  DataofMovies2(csvdata){
   let datalenght = Object.keys(csvdata).length;
     for(let i = 0; i < datalenght -1 ; i++){
@@ -84,7 +87,7 @@ async function  DataofMovies2(csvdata){
 };
 
 
-// saves the data of primary csv
+// checks the mode the page is in. And then reads the files if in csv mode or launches the api if in id mode. Then launches the comparison function.
 btn.addEventListener("pointerdown", async function (e) {
   topbar.className = 'barraleft shadowred ' ;
   if(check == false){
@@ -126,7 +129,7 @@ btn.addEventListener("pointerdown", async function (e) {
 });
 
 
-
+// reads the second csv file 
 async function csvreader2(){
   let input = csvFile2.files[0];
   if(check2 == true){
@@ -154,6 +157,7 @@ async function adddiv(){
   const imgurl = document.createElement('img');
   const divtinfo = document.createElement('h3');
   divtinfo.className = 'info';
+  // maybe with a framework i would not need 3 different loops maybe i could add all to a single loop but this works. this loop adds the poster container
   for(let i = 0; i < names.length ; i++){
     let divtinfo_cloned = divtinfo.cloneNode(true);
     divtinfo_cloned.id = 'info' + i;
@@ -166,7 +170,7 @@ async function adddiv(){
     ImgListChild.appendChild(divtinfo_cloned);
   };
 
-
+  // this loops adds the titles
   for(let i = 0; i < names.length ; i++){
     let divt_cloned = divt.cloneNode(true);
     divt_cloned.innerHTML = names[i] ;
@@ -176,7 +180,7 @@ async function adddiv(){
     ImgListChild.appendChild(divt_cloned);
   };
 
-
+// this loop adds the img and the rating
   for(let i = 0; i < names.length ; i++){
     let moviedata =await tmdbapi(names[i]);
     let imgurl_cloned = imgurl.cloneNode(true);
@@ -207,6 +211,7 @@ function removedivs(){
 async function tmdbapi(x){
   let title = x.replace(/\s+/g,'%20');
   let moviedata = await fetch("https://api.themoviedb.org/3/search/multi?"+apikey+"&language=en-US&query="+title).then(response => response.json());
+  // if tmbd cant find the movie it gives the poster of 2011 greenlantern
   if(moviedata.results[0] == undefined){
     let nose = {
       poster_path: '/fj21HwUprqjjwTdkKC1XZurRSpV.jpg'
@@ -247,27 +252,14 @@ function comparator(){
   console.log(moviesnotshared);
 };
 
-// page maker
 
 const textbox = document.getElementById('search');
 const textboxOther = document.getElementById('searchOther');
 
-test.addEventListener("pointerdown", async function(){
-  let member = textbox.value; 
-  let member2 = textboxOther.value;
-  console.log("You're: "+member);
-  console.log("Other is: "+member2);
-  console.log("algo raro esta pasando")
-  let MemberData = await letterboxdAPicall(member);
-  MemberDataParsed = Papa.parse(MemberData,papaconfig).data;
-  console.log(MemberDataParsed);
-  // let MemberDataOther = await letterboxdAPicall(member2);
-  // MemberDataOtherParsed = Papa.parse(MemberDataOther,papaconfig).data;
-  // console.log(MemberDataOtherParsed);
-});
-
+// calls the python api and receives the data in csv
 async function letterboxdAPicall(memberAPI){
-  let memberjson = await fetch('http://localhost:8000/api/'+ memberAPI).then(response => response.json());
+  // https://ztjpjn5f7fwndqkdylx5t36hyq0zakks.lambda-url.us-east-1.on.aws/api/nidan
+  let memberjson = await fetch('http://127.0.0.1:8000/api/'+ memberAPI).then(response => response.json());
   return memberjson;
 };
 
@@ -313,19 +305,7 @@ const TextBoxOtherContainer = document.getElementById("searchBoxOtherContainer")
 const textboxContainer = document.getElementById("searchBoxContainer");
 var check = false;
 checkbox.addEventListener("change", function(){
-  console.log('x');
   if(checkbox.checked){
-    console.log('checked');
-    dropother.style.display = 'none';
-    dropyourself.style.display = 'none';
-    userfile.style.display = 'none';
-    comparefile.style.display = 'none';
-    textboxContainer.style.display = 'flex';
-    TextBoxOtherContainer .style.display = 'flex';
-    check = true;
-  }
-  else{
-    console.log('unchecked');
     dropother.style.display = 'block';
     dropyourself.style.display = 'block';
     userfile.style.display = 'block';
@@ -334,5 +314,47 @@ checkbox.addEventListener("change", function(){
     TextBoxOtherContainer .style.display = 'none';
     check = false;
   }
+  if(!checkbox.checked){
+    dropother.style.display = 'none';
+    dropyourself.style.display = 'none';
+    userfile.style.display = 'none';
+    comparefile.style.display = 'none';
+    textboxContainer.style.display = 'flex';
+    TextBoxOtherContainer .style.display = 'flex';
+    check = true;
+  }
   
 });
+
+test.addEventListener("pointerdown", async function(){
+ let datajson = await letterboxdAPicall('nidan');
+
+ console.log(Papa.parse(datajson[0],papaconfig).data);
+//  let datajsonparsed = Papa.parse(datajson,papaconfig).data
+//  DataofMovies(datajsonparsed)
+//  let datajson2 = ArrayDivider(names)
+//  console.log(names)
+//  console.log(datajson2);
+
+
+});
+// function that makes an array with n number of elements or testing 
+function arraymaker(number){
+  let array = [];
+  for(let i =0; i < number; i++){
+    array.push(i);
+  }
+  return array;
+}
+
+// making the pages each with 72 elements
+
+async function addpaginator(array){
+  let paginator = document.getElementById("paginator");
+  let paginator_cloned = paginator.cloneNode(true);
+  paginator_cloned.id = 'paginator'+array.length;
+  paginator_cloned.innerHTML = array.length;
+  paginator_cloned.className = 'paginator';
+  let paginatorContainer = document.getElementById("paginatorContainer");
+  paginatorContainer.appendChild(paginator_cloned);
+}

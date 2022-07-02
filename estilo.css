@@ -162,7 +162,7 @@ background-color: blue;
     grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
   }
   .Downloader{
-    display: flex;
+    display: none;
     width: 300px;
     height: 200px;
     background-color:rgb(26, 25, 25) ;
@@ -259,4 +259,22 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.paginatorcontainer{
+display: inline-block;
+height: 1em;
+width: 50em;
+margin: 0 25% 10% 25%;
+
+}
+.paginatorcontainer h1 {
+  color: rgb(121, 121, 121);
+  float: left;
+  padding: 5px;
+}
+
+.paginatorcontainer h1:hover {
+  color: #fff;
+  text-decoration: underline;
 }

@@ -12,11 +12,11 @@
         <div class="barraleft" id="topbar">
             <h3 id="test" class="btna">Test</h3>
             <h3 id="btn" class="btna" >Load comparator</h3>
-            <label for='csvFile' > 
+            <label for='csvFile' style="display:none ;"> 
                 <h3 class="btna" id="userfile" >Your csv file</h3>
                 <input style="display:none ;" class="btna" multiple="multiple" type="file" id="csvFile" accept=".csv" />
             </label>
-            <label for='csvFile2' > 
+            <label for='csvFile2' style="display:none ;"> 
                 <h3 class="btna" id="comparefile">Csv file to compare</h3>
                 <input class="btna" style="display:none ;" multiple="multiple" type="file" id="csvFile2" accept=".csv" />
             </label>
@@ -64,23 +64,22 @@
                     </label>
                 </div>
             </div> 
-        <divs >
-            <div class="paginatorcontainer" id="paginatorContainer">
-                <h1>1 </h1>
-            </div>
-            <section id="ImgList" class="basic-grid">
-                <div class="poster" id="examplePoster">
-                    <h3 class="info">
+        <divs>
+                <div class="paginatorcontainer" id="paginatorContainer">
+                </div>
+            <section id="ImgList" >
+                <div class="poster" id="examplePoster" style="margin: auto ;">
+                    <h3 class="info" id="exampleinfo">
                         here will be a short resume of each movie
                     </h3>
-                    <div class="titulo">"Hover me"</div>
-                    <img src="https://m.media-amazon.com/images/M/MV5BMTY5MzYzNjc5NV5BMl5BanBnXkFtZTYwNTUyNTc2._V1_SX300.jpg"></img> 
+                    <div class="titulo" id="exampletitle">"Hover me"</div>
+                    <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/fj21HwUprqjjwTdkKC1XZurRSpV.jpg"></img> 
                     <div>
-                    <div class="one">Your Rating</div>
-                    <div class="two">
-                        <h4 style="overflow: hidden; margin-top: 0; margin-left: 50px;">other person rating</h4>
+                        <div class="one">Your Rating</div>
+                        <div class="two">
+                            <h4 style="overflow: hidden; margin-top: 0; margin-left: 50px;">other person rating</h4>
+                        </div>
                     </div>
-                </div>
                 </div>
             </section>
         </divs>

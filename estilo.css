@@ -262,19 +262,21 @@ input:checked + .slider:before {
 }
 
 .paginatorcontainer{
-display: inline-block;
+display: flex;
 height: 1em;
-width: 50em;
-margin: 0 25% 10% 25%;
+width: 100em;
+margin: 0 0% 10% 10%;
+
 
 }
 .paginatorcontainer h1 {
   color: rgb(121, 121, 121);
-  float: left;
-  padding: 5px;
+
+  margin: 0 5px;
 }
 
 .paginatorcontainer h1:hover {
   color: #fff;
   text-decoration: underline;
 }
+

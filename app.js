@@ -39,9 +39,10 @@ var moviesshared = [];
 var moviesnotshared = [];
 
 // retrieves the #name #rating and link of the movies from the csv given by the user or the API
+// thanks to a spelling mistake this now only works with CVS recipes.
 async function  DataofMovies(CVSdata){
-  let datalenght = Object.keys(CVSdata).length;
-  if(check == false){
+  let datalenght = CVSdata.length;
+  if(check == true){
   CVSdata.sort(function(a, b){
     if (a.Rating<b.Rating){
       return 1;
@@ -50,39 +51,62 @@ async function  DataofMovies(CVSdata){
       return -1;
     }
     return 0;
-  })};
-    for(let i = 0; i < datalenght -1 ; i++){
+  });
+  for(let i = 0; i < datalenght -1 ; i++){
       let objdata = Object.entries(CVSdata[i]);
-      // check is used to see if its in csv or id mode
-      if(check == false){
-        if(objdata[4][1]>=4){
-        names.push(objdata[1][1]);
-        ratin.push(objdata[4][1]);
-        links.push(objdata[3][1]);
-        }
-        else{
-        }}
-      else{
-          if(objdata[4][1]>=7){
-          names.push(objdata[1][1]);
-          ratin.push(objdata[4][1]);
-          links.push(objdata[3][1]);
-        }
-        else{
-        }
+      if(objdata[4][1]>=4){
+      names.push(objdata[1][1]);
+      ratin.push(objdata[4][1]);
+      links.push(objdata[3][1]);
+      }
+    else{
+      }
     }}
-    console.log('test DataofMovies');
+      else{
+        for(let i = 0; i < CVSdata.length; i++){
+        let f = Papa.parse(CVSdata[0],papaconfig).data;
+        let objdatarecursive = Papa.parse(CVSdata[i],papaconfig).data;
+        let namestemp = [];
+        let ratintemp = [];
+        let linkstemp = [];
+        for(let j = 0; j <= objdatarecursive.length-2; j++){
+          if(objdatarecursive[j].Rating>=7){
+          namestemp.push(objdatarecursive[j].Name);
+          ratintemp.push(objdatarecursive[j].Rating);
+          linkstemp.push(objdatarecursive[j].Link);
+          }
+          else{
+          }}
+          names.push(namestemp);
+          ratin.push(ratintemp);
+          links.push(linkstemp);
+      
+    }
+    console.log('DataofMovies Finished');
   return [names, ratin]
-}
+  }}
 // retreves rating and name of a movies from the datagiven to the other
 async function  DataofMovies2(csvdata){
   let datalenght = Object.keys(csvdata).length;
+  if(check == true){
     for(let i = 0; i < datalenght -1 ; i++){
       let objdata = Object.entries(csvdata[i]);
         namesother.push(objdata[1][1]);
         ratinother.push(objdata[4][1]);
     }
-    console.log('test DataofMovies2');
+  }
+  else{
+    let namesothertemp = []
+    let ratinothertemp = []
+    let ParsedCsv= Papa.parse(csvdata,papaconfig).data;
+    for(let i = 0; i < ParsedCsv.length; i++){
+      let objdatarecursive = ParsedCsv[i];
+      namesothertemp.push(objdatarecursive[1][1]);
+      ratinothertemp.push(objdatarecursive[4][1]);
+    }
+    namesother.push(namesothertemp);
+    ratinother.push(ratinothertemp);
+  }
   return [namesother, ratinother]
 };
 
@@ -90,7 +114,7 @@ async function  DataofMovies2(csvdata){
 // checks the mode the page is in. And then reads the files if in csv mode or launches the api if in id mode. Then launches the comparison function.
 btn.addEventListener("pointerdown", async function (e) {
   topbar.className = 'barraleft shadowred ' ;
-  if(check == false){
+  if(check == true){
     e.preventDefault
     let input = csvFile.files[0];
     if(check1 == true){
@@ -214,7 +238,7 @@ async function tmdbapi(x){
   // if tmbd cant find the movie it gives the poster of 2011 greenlantern
   if(moviedata.results[0] == undefined){
     let nose = {
-      poster_path: '/fj21HwUprqjjwTdkKC1XZurRSpV.jpg'
+      poster_path: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/fj21HwUprqjjwTdkKC1XZurRSpV.jpg'
     }
     return nose 
   }
@@ -327,16 +351,17 @@ checkbox.addEventListener("change", function(){
 });
 
 test.addEventListener("pointerdown", async function(){
- let datajson = await letterboxdAPicall('nidan');
-
- console.log(Papa.parse(datajson[0],papaconfig).data);
-//  let datajsonparsed = Papa.parse(datajson,papaconfig).data
-//  DataofMovies(datajsonparsed)
-//  let datajson2 = ArrayDivider(names)
-//  console.log(names)
-//  console.log(datajson2);
-
-
+  let member = await letterboxdAPicall('nidan');
+  let member2 = Papa.parse(member[0],papaconfig).data
+  removedivs();
+  console.log('member2 :',member2);
+  await DataofMovies(member);
+  console.log('paginator starts')
+  await addpaginator(names);
+console.log('paginator ends/ moviepages starts')
+  addmoviepages();
+  console.log('moviepages ends/ divtopages starts')
+  await adddivtopages();
 });
 // function that makes an array with n number of elements or testing 
 function arraymaker(number){
@@ -350,11 +375,69 @@ function arraymaker(number){
 // making the pages each with 72 elements
 
 async function addpaginator(array){
-  let paginator = document.getElementById("paginator");
-  let paginator_cloned = paginator.cloneNode(true);
-  paginator_cloned.id = 'paginator'+array.length;
-  paginator_cloned.innerHTML = array.length;
-  paginator_cloned.className = 'paginator';
-  let paginatorContainer = document.getElementById("paginatorContainer");
-  paginatorContainer.appendChild(paginator_cloned);
+ let paginatorContainer = document.getElementById("paginatorContainer");
+ //pagesN is pagesNumber
+ let pagesN = document.createElement('h1');
+ for(let i=1; i <= array.length; i++){
+    let pagesN_cloned = pagesN.cloneNode(true);
+    pagesN_cloned.id = 'page'+i;
+    pagesN_cloned.innerHTML = i;
+    pagesN_cloned.className = 'page';
+    paginatorContainer.appendChild(pagesN_cloned);
+    pagesN_cloned.addEventListener('pointerdown', async function(){
+      let PageContainerId = document.getElementById('pagemoviecontainer'+i);
+      let pagesquery = document.querySelectorAll('.basic-grid');
+      pagesquery.forEach(elements=> {
+        elements.style.display = 'none';
+      })
+      PageContainerId.style.display = 'grid';
+      }
+    );
+  }
+};
+const examplePoster = document.getElementById("examplePoster");
+// a function that creates a pageContainer for each page in the paginator
+function addmoviepages(){
+  let paginatorContainer = document.getElementById("paginatorContainer")
+  let pageContainer = document.getElementById("ImgList");
+  let page = document.createElement('section');
+  page.className = 'basic-grid';
+  for(let i=1; i <= paginatorContainer.childElementCount; i++){
+    let page_cloned = page.cloneNode(true);
+    page_cloned.id = 'pagemoviecontainer'+i;
+    page_cloned.style = 'display: none;';
+    page_cloned.appendChild(examplePoster.cloneNode(true));
+    page_cloned.appendChild(examplePoster.cloneNode(true));
+    pageContainer.appendChild(page_cloned);
+  }
+}
+async function adddivtopages(){
+  let poster = document.createElement('div');
+  poster.className = 'poster';
+  let title = document.createElement('div');
+  title.className = 'titulo';
+  let img = document.createElement('img');
+  img.alt = '';
+  let one = document.createElement('div');
+  one.className = 'one';
+
+  for(let i = 0; i< names.length;i++){
+    let page = document.getElementById('pagemoviecontainer'+(i+1));
+    for(let j = 0; j<names[i].length;j++){
+      let poster_cloned = poster.cloneNode(true);
+      poster_cloned.id = 'poster_'+i+'_'+j;
+      let title_cloned = title.cloneNode(true);
+      title_cloned.innerHTML = names[i][j];
+      let img_cloned = img.cloneNode(true);
+      let x = await tmdbapi(names[i][j]);
+      img_cloned.src = "https://image.tmdb.org/t/p/w500"+ x.poster_path;
+      img_cloned.alt = names[i][j];
+      let one_cloned = one.cloneNode(true);
+      one_cloned.innerHTML = ratin[i][j];
+      poster_cloned.appendChild(title_cloned);
+      poster_cloned.appendChild(img_cloned);
+      poster_cloned.appendChild(one_cloned);
+      page.appendChild(poster_cloned);
+    }
+  }
 }

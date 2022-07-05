@@ -15,7 +15,7 @@ var CsvDataParsed = 'parse 1 empty';
 var CsvDataOtherParsed = 'parsed 2 empty';
 var MemberDataParsed = '';
 var MemberDataOtherParsed = '';
-
+var AllorOnlySeen = 'ALL';
 var dropfile = [];
 var dropfile2 = [];
 
@@ -96,16 +96,13 @@ async function  DataofMovies2(csvdata){
     }
   }
   else{
-    let namesothertemp = []
-    let ratinothertemp = []
-    let ParsedCsv= Papa.parse(csvdata,papaconfig).data;
-    for(let i = 0; i < ParsedCsv.length; i++){
-      let objdatarecursive = ParsedCsv[i];
-      namesothertemp.push(objdatarecursive[1][1]);
-      ratinothertemp.push(objdatarecursive[4][1]);
+    for(let i =0; i < csvdata.length; i++){
+      let objdatarecursive = Papa.parse(csvdata[i],papaconfig).data;
+      for(let j = 0; j <= objdatarecursive.length-2; j++){
+        namesother.push(objdatarecursive[j].Name);
+        ratinother.push(objdatarecursive[j].Rating);
+      }
     }
-    namesother.push(namesothertemp);
-    ratinother.push(ratinothertemp);
   }
   return [namesother, ratinother]
 };
@@ -282,8 +279,10 @@ const textboxOther = document.getElementById('searchOther');
 
 // calls the python api and receives the data in csv
 async function letterboxdAPicall(memberAPI){
-  // https://ztjpjn5f7fwndqkdylx5t36hyq0zakks.lambda-url.us-east-1.on.aws/api/nidan
-  let memberjson = await fetch('http://127.0.0.1:8000/api/'+ memberAPI).then(response => response.json());
+  let memberjson = await fetch('http://127.0.0.1:8000/api/'+ memberAPI).then(response => {
+  if (response.ok){ return response.json();}
+  throw new Error('Network response was not ok.');})
+  .catch(error => alert('Something whent wrong. The most common occurrence is a mispelled username.'));
   return memberjson;
 };
 
@@ -349,19 +348,24 @@ checkbox.addEventListener("change", function(){
   }
   
 });
-
+let root = document.documentElement;
 test.addEventListener("pointerdown", async function(){
-  let member = await letterboxdAPicall('nidan');
-  let member2 = Papa.parse(member[0],papaconfig).data
+  topbar.className = 'barraleft shadowred' ;
+  root.style.setProperty('--shadowposition', '90vw');
+  let member = await letterboxdAPicall(textbox.value);
+  root.style.setProperty('--shadowposition', '50vw');
+  let member2 = await letterboxdAPicall(textboxOther.value);
   removedivs();
-  console.log('member2 :',member2);
   await DataofMovies(member);
-  console.log('paginator starts')
+  await DataofMovies2(member2);
+  console.log('paginator starts');
   await addpaginator(names);
-console.log('paginator ends/ moviepages starts')
+  console.log('paginator ends/ moviepages starts');
   addmoviepages();
-  console.log('moviepages ends/ divtopages starts')
-  await adddivtopages();
+  console.log('moviepages ends/ divtopages starts');
+  adddivtopages();
+  document.getElementById("pagemoviecontainer1").style.display = 'grid';
+  topbar.className = 'barraleft shadowgreen '; 
 });
 // function that makes an array with n number of elements or testing 
 function arraymaker(number){
@@ -420,24 +424,54 @@ async function adddivtopages(){
   img.alt = '';
   let one = document.createElement('div');
   one.className = 'one';
+  let two = document.createElement('div');
+  two.className = 'two';
 
   for(let i = 0; i< names.length;i++){
     let page = document.getElementById('pagemoviecontainer'+(i+1));
     for(let j = 0; j<names[i].length;j++){
-      let poster_cloned = poster.cloneNode(true);
-      poster_cloned.id = 'poster_'+i+'_'+j;
-      let title_cloned = title.cloneNode(true);
-      title_cloned.innerHTML = names[i][j];
-      let img_cloned = img.cloneNode(true);
-      let x = await tmdbapi(names[i][j]);
-      img_cloned.src = "https://image.tmdb.org/t/p/w500"+ x.poster_path;
-      img_cloned.alt = names[i][j];
-      let one_cloned = one.cloneNode(true);
-      one_cloned.innerHTML = ratin[i][j];
-      poster_cloned.appendChild(title_cloned);
-      poster_cloned.appendChild(img_cloned);
-      poster_cloned.appendChild(one_cloned);
-      page.appendChild(poster_cloned);
+      let ratinposition = namesother.indexOf(names[i][j]);
+      if(ratinposition == -1 && AllorOnlySeen == 'ALL'){
+         let poster_cloned = poster.cloneNode(true);
+         poster_cloned.id = 'poster_'+i+'_'+j;
+         let title_cloned = title.cloneNode(true);
+         title_cloned.innerHTML = names[i][j];
+         let img_cloned = img.cloneNode(true);
+         let x = await tmdbapi(names[i][j]);
+         img_cloned.src = "https://image.tmdb.org/t/p/w500"+ x.poster_path;
+         img_cloned.alt = names[i][j];
+         let one_cloned = one.cloneNode(true);
+         one_cloned.innerHTML = ratin[i][j];
+         let two_cloned = two.cloneNode(true);
+         two_cloned.innerHTML = 'Not Seen';
+         poster_cloned.appendChild(title_cloned);
+         poster_cloned.appendChild(img_cloned);
+         poster_cloned.appendChild(one_cloned);
+         poster_cloned.appendChild(two_cloned);
+         page.appendChild(poster_cloned);
+        }
+      if(ratinposition == -1 && AllorOnlySeen == 'ONLYSEEN' ){
+
+         }
+      if(ratinposition != -1){
+        let poster_cloned = poster.cloneNode(true);
+        poster_cloned.id = 'poster_'+i+'_'+j;
+        let title_cloned = title.cloneNode(true);
+        title_cloned.innerHTML = names[i][j];
+        let img_cloned = img.cloneNode(true);
+        let x = await tmdbapi(names[i][j]);
+        img_cloned.src = "https://image.tmdb.org/t/p/w500"+ x.poster_path;
+        img_cloned.alt = names[i][j];
+        let one_cloned = one.cloneNode(true);
+        one_cloned.innerHTML = ratin[i][j];
+        let two_cloned = two.cloneNode(true);
+        two_cloned.innerHTML = ratinother[ratinposition];
+        poster_cloned.appendChild(title_cloned);
+        poster_cloned.appendChild(img_cloned);
+        poster_cloned.appendChild(one_cloned);
+        poster_cloned.appendChild(two_cloned);
+        page.appendChild(poster_cloned);
+      };
     }
   }
 }

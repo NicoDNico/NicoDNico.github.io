@@ -1,5 +1,7 @@
 
-
+:root{
+  --shadowposition: 100vw;
+}
 .level {
     width: 100%;
     background-color: black;
@@ -30,7 +32,8 @@ min-height: 100%;
     z-index: 4;
 }
 .shadowred{
-    box-shadow: 0px 0px 20px red;
+  box-shadow: var(--shadowposition) 0px 20px 0px red;
+
 }
 .shadowgreen{
     box-shadow: 0 0 20px green;
@@ -136,9 +139,10 @@ img{
   .one {
     left: 0;
     bottom: 0;
-background-color: blue;
+    background-color: blue;
     -webkit-clip-path: polygon(0 0, 100% 0%, 50% 100%, 0% 100%);
     clip-path: polygon(0 0, 100% 0%, 50% 100%, 0% 100%); 
+    border: solid rgb(51, 49, 49) 5px;
   }
   .two {
     right: 0;
@@ -147,6 +151,7 @@ background-color: blue;
     -webkit-clip-path: polygon(50% 0, 100% 0%, 100% 100%, 0% 100%);
     clip-path: polygon(50% 0, 100% 0%, 100% 100%, 0% 100%); 
     text-align: right;
+    border: solid rgb(51, 49, 49) 5px;
   }
   .twoinside{
     overflow: hidden;
@@ -247,9 +252,11 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  /* -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px); */
+  right: 0;
+  left: 50%;
 }
 
 /* Rounded sliders */

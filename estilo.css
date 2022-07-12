@@ -110,8 +110,8 @@ img{
 .basic-grid{
     display: grid;
     gap: 1rem;
-    margin-left: 5%;
-    margin-right: 0;
+    margin-left: 5em;
+    margin-right: 5em;
     grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
 }
 

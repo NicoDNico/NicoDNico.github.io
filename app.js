@@ -155,16 +155,7 @@ const textboxOther = document.getElementById('searchOther');
 
 // calls the python api and receives the data in csv
 async function letterboxdAPicall(memberAPI){
-  // let memberjson = await fetch('https://375eutpz4e.execute-api.us-east-1.amazonaws.com/TestDepoy/api/'+ memberAPI , {
-  //   method: 'GET',
-  //   headers: {
-  //     'Access-Control-Allow-Origin': '*',
-  //     'X-Api-Key': 'yxcgWGQJSa96zM7XSMk8d2EgckI8AtjoaiocOu8m',
-  //   }
-  // }).then(response => {
-  // if (response.ok){ return response.json();}
-  // throw new Error('Network response was not ok.');})
-  // .catch(error => alert('Something whent wrong. The most common occurrence is a mispelled username.'));
+
   let memberjson = await fetch('http://127.0.0.1:8000/api/'+ memberAPI).then(response => response.json());
   return memberjson;
 };
@@ -187,6 +178,11 @@ checkbox.addEventListener("change", function(){
 });
 let root = document.documentElement;
 test.addEventListener("pointerdown", async function(){
+StartPage();
+});
+
+// this function loads all the functionality of the page. so i can use the same button for testing. im that kind of lazy.
+async function StartPage(){
   console.log('Started');
   let member = await letterboxdAPicall(textbox.value);
   let memberparsed = Papa.parse(member,papaconfig).data;
@@ -202,10 +198,10 @@ test.addEventListener("pointerdown", async function(){
   addpaginator(sharedmovies);
   removedivs();
   addmoviepages();
-  await adddivtopages(sharedmovies);
-  document.getElementById('pagemoviecontainer1').style.display = 'grid';
-});
+  adddivtopages(sharedmovies);
+  document.getElementById('pagemoviecontainer1').style = 'display: grid;';
 
+}
 
 // function that makes an array with n number of elements or testing 
 function arraymaker(number){

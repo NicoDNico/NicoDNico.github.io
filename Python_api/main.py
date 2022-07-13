@@ -38,6 +38,18 @@ def get_member(member: str):
     print(f'Time: {time.time() - start}')
     return response
 
+@app.get("/t/{member}")
+def get_test(member: str):
+    response = ''
+    get_test2(member)
+    return response
+
+def get_test2(member):
+    content = requests.get('https://letterboxd.com/'+ member +'/films/by/member-rating/page/1/')
+    soup = BeautifulSoup(content.text, 'html.parser')
+    URL = soup.find('ul', class_='poster-list')
+    print(URL)
+    return 
 
 
 

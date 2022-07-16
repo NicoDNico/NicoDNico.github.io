@@ -131,27 +131,27 @@ def get_info(member):
 def get_games(member):
     def get_rating(rating):
         match rating:
-            case 'width: 100%': 
+            case 'width:100%': 
                 return 10
-            case 'width: 90%':
+            case 'width:90%':
                 return 9
-            case 'width: 80%':
+            case 'width:80%':
                 return 8
-            case 'width: 70%':
+            case 'width:70%':
                 return 7
-            case 'width: 60%':
+            case 'width:60%':
                 return 6
-            case 'width: 50%':
+            case 'width:50%':
                 return 5
-            case 'width: 40%':
+            case 'width:40%':
                 return 4
-            case 'width: 30%':
+            case 'width:30%':
                 return 3
-            case 'width: 20%':
+            case 'width:20%':
                 return 2
-            case 'width: 10%':
+            case 'width:10%':
                 return 1
-            case 'width: 0%':
+            case 'width:0%':
                 return 0
 
 

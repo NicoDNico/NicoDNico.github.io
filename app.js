@@ -11,16 +11,13 @@ var links = [];
 var ratin = [];
 var namesother = [];
 var ratinother = [];
-var CsvDataParsed = 'parse 1 empty';
-var CsvDataOtherParsed = 'parsed 2 empty';
 var MemberDataParsed = '';
 var MemberDataOtherParsed = '';
-var AllorOnlySeen = 'ALL';
 var dropfile = [];
 var dropfile2 = [];
 
 const papaconfig = {header:true};
-
+const modeSwitch = document.getElementById('mode');
 var check1 = false;
 var check2 = false;
 const apikey = 'api_key=5625c97a465184ed5c6509459a4505fb';
@@ -31,12 +28,6 @@ const topbar = document.getElementById("topbar");
 
 const test = document.getElementById("test");
 
-const userfile = document.getElementById("userfile");
-
-const comparefile = document.getElementById("comparefile");
-
-var moviesshared = [];
-var moviesnotshared = [];
 
 // retrieves the #name #rating and link of the movies from the csv given by the user or the API
 // thanks to a spelling mistake this now only works with CVS recipes.
@@ -83,7 +74,7 @@ btn.addEventListener("pointerdown", async function (e) {
       await comparator();
        
     };
-    reader.readAsText(input);
+    // reader.readAsText(input);
   }
   else{
     let member = textbox.value; 
@@ -117,7 +108,7 @@ async function csvreader2(){
     CsvDataParsed = csvtext;
     console.log(await DataofMovies2(csvtext) );   
   };
-  reader.readAsText(input);
+  // reader.readAsText(input);
 };
 // This scripts modifies and adds divs to the page
 
@@ -159,49 +150,78 @@ async function letterboxdAPicall(memberAPI){
   let memberjson = await fetch('http://127.0.0.1:8000/api/'+ memberAPI).then(response => response.json());
   return memberjson;
 };
-
+async function backloggdAPIcall(member){
+  let memberjson = await fetch('http://localhost:8000/t/'+ member).then(response => response.json());
+  return memberjson;
+}
 
 const checkbox = document.getElementById("switch");
-const TextBoxOtherContainer = document.getElementById("searchBoxOtherContainer");
-const textboxContainer = document.getElementById("searchBoxContainer");
 var check = false;
 checkbox.addEventListener("change", function(){
-  if(checkbox.checked){
-
-    check = false;
-  }
-  if(!checkbox.checked){
-
+  if(check === false){
     check = true;
+    console.log("check is true");
+  }
+  else if(check === true){
+    console.log("check is false");
+    check = false;
   }
   
 });
 let root = document.documentElement;
 test.addEventListener("pointerdown", async function(){
 StartPage();
+// let memberjson = await fetch('http://127.0.0.1:8000/t/nidan').then(response => response.json());
+// let memberparsed = Papa.parse(memberjson,papaconfig).data;
+// console.log(memberparsed);
+
 });
 
 // this function loads all the functionality of the page. so i can use the same button for testing. im that kind of lazy.
 async function StartPage(){
   console.log('Started');
-  let member = await letterboxdAPicall(textbox.value);
-  let memberparsed = Papa.parse(member,papaconfig).data;
-  console.log('Member parsed')
-  await DataofMovies(memberparsed);
-  let memberother = await letterboxdAPicall(textboxOther.value);
-  let memberotherparsed = Papa.parse(memberother,papaconfig).data;
-  await DataofMovies2(memberotherparsed);
-  console.log(memberparsed);
-  console.log(memberotherparsed);
-  let sharedmovies = arraydivider(memberparsed, memberotherparsed);
-  console.log(sharedmovies);
-  addpaginator(sharedmovies);
-  removedivs();
-  addmoviepages();
-  adddivtopages(sharedmovies);
-  document.getElementById('pagemoviecontainer1').style = 'display: grid;';
+  if(mode === false){
+    let member = await letterboxdAPicall(textbox.value);
+    let memberparsed = Papa.parse(member,papaconfig).data;
+    console.log('Member parsed')
+    await DataofMovies(memberparsed);
+    let memberother = await letterboxdAPicall(textboxOther.value);
+    let memberotherparsed = Papa.parse(memberother,papaconfig).data;
+    await DataofMovies2(memberotherparsed);
+    console.log(memberparsed);
+    console.log(memberotherparsed);
+    let sharedmovies = arraydivider(memberparsed, memberotherparsed);
+    console.log(sharedmovies);
+    addpaginator(sharedmovies);
+    removedivs();
+    addmoviepages();
+    adddivtopages(sharedmovies);
+    document.getElementById('pagemoviecontainer1').style = 'display: grid;';
+  }
+  if(mode === true){
+    let member = await backloggdAPIcall(textbox.value);
+    let memberparsed = Papa.parse(member,papaconfig).data;
+    console.log('Member parsed')
+    await DataofMovies(memberparsed);
+    let memberother = await backloggdAPIcall(textboxOther.value);
+    let memberotherparsed = Papa.parse(memberother,papaconfig).data;
+    await DataofMovies2(memberotherparsed);
+    console.log(memberparsed);
+    console.log(memberotherparsed);
+    let sharedmovies = arraydivider(memberparsed, memberotherparsed);
+    console.log(sharedmovies);
+    addpaginator(sharedmovies);
+    removedivs();
+    addmoviepages();
+    adddivtopages(sharedmovies);
+    document.getElementById('pagemoviecontainer1').style = 'display: grid;';
 
-}
+  }
+ 
+
+
+
+};
 
 // function that makes an array with n number of elements or testing 
 function arraymaker(number){
@@ -255,6 +275,7 @@ async function adddivtopages(array){
   let title = document.createElement('div');
   title.className = 'titulo';
   let img = document.createElement('img');
+  img.src = 
   img.alt = '';
   let one = document.createElement('div');
   one.className = 'one';
@@ -270,9 +291,20 @@ async function adddivtopages(array){
         let title_cloned = title.cloneNode(true);
         title_cloned.innerHTML = array[i][j][0].Name;
         let img_cloned = img.cloneNode(true);
-        let x = await tmdbapi(array[i][j][0].Name);
-        img_cloned.src = "https://image.tmdb.org/t/p/w500"+ x.poster_path;
-        img_cloned.alt = array[i][j][0].Name;
+        if(mode === false){
+          
+          let x = await tmdbapi(array[i][j][0].Name);
+          img_cloned.src = "https://image.tmdb.org/t/p/w500"+ x.poster_path;
+          img_cloned.alt = array[i][j][0].Name;
+          let info_cloned = info.cloneNode(true);
+          info_cloned.innerHTML = x.overview;
+          poster_cloned.appendChild(info_cloned);
+        }
+        if(mode === true){
+          img_cloned.src = array[i][j][0].Poster;
+          img_cloned.alt = array[i][j][0].Name;
+          poster_cloned.href = array[i][j][0].Link;
+        }
         let one_cloned = one.cloneNode(true);
         one_cloned.innerHTML = array[i][j][0].Rating;
         let two_cloned = two.cloneNode(true);
@@ -283,32 +315,32 @@ async function adddivtopages(array){
         if (array[i][j][1].Rating !== ''){
         two_cloned.innerHTML = array[i][j][1].Rating;
         }
-        let info_cloned = info.cloneNode(true);
-        info_cloned.innerHTML = x.overview;
         poster_cloned.appendChild(title_cloned);
         poster_cloned.appendChild(img_cloned);
         poster_cloned.appendChild(one_cloned);
         poster_cloned.appendChild(two_cloned);
-        poster_cloned.appendChild(info_cloned);
         page.appendChild(poster_cloned);
       }
     };
 }
 // i know theres an easier way of doing this without using findindex i actually found it before
 // then wanted to make some changes and completely lost it. it works though.
-// oh yeah this makes a new array with the movies that are in both arrays
+// oh yeah this makes a new array with the movies/games that are in both arrays
 function arraydivider(member,memberother){
   let matrix = [];
   let container = [];
   console.log(member.length)
   console.log(memberother.length)
   for(let i = 0; i < member.length -1; i++){
-    let index = memberother.findIndex((movie) => movie.Name === member[i].Name);
+    let index = memberother.findIndex((postion) => postion.Name === member[i].Name);
     if(index !== -1){
     container.push([member[i],memberother[index]]);
     }
     if(index === -1 && check === false){
       container.push([member[i],{Rating: 'Not Seen'}]);
+    }
+    else if(index === -1 && check === true){
+    
     }
     if(container.length === 72){
       matrix.push(container);
@@ -320,6 +352,25 @@ function arraydivider(member,memberother){
   }
   return matrix;
 }
+
+var mode = false;
+modeSwitch.addEventListener('pointerdown', function(){
+  const dontaskaboutthisshit = document.getElementById('dontaskaboutthisshit');
+  if (mode == false){
+    mode = true;
+    console.log('True')
+    dontaskaboutthisshit.innerHTML = 'LETTERBOXD';
+    document.querySelector('.barraleft').style = 'background-color: #ff9a00;';
+    document.querySelector('.body').style = 'background-color: #00a2ff;';
+  }
+  else {
+    mode = false;
+    console.log('False')
+    dontaskaboutthisshit.innerHTML = 'BACKLOGGD';
+    document.querySelector('.barraleft').style = 'background-color: #1a1919;';
+    document.querySelector('.body').style = 'background-color: #00000;';
+  }
+});
 
 
 

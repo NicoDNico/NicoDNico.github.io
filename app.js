@@ -145,10 +145,8 @@ async function StartPage(){
     let member = await letterboxdAPicall(textbox.value);
     let memberparsed = Papa.parse(member,papaconfig).data;
     console.log('Member parsed')
-    await DataofMovies(memberparsed);
     let memberother = await letterboxdAPicall(textboxOther.value);
     let memberotherparsed = Papa.parse(memberother,papaconfig).data;
-    await DataofMovies2(memberotherparsed);
     console.log(memberparsed);
     console.log(memberotherparsed);
     let sharedmovies = arraydivider(memberparsed, memberotherparsed);

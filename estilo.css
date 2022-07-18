@@ -34,6 +34,7 @@ min-height: 100%;
     display: flex;
     justify-content: center;
     z-index: 4;
+    transition-duration:0.4s ;
 }
 .shadowred{
   box-shadow: var(--shadowposition) 0px 20px 0px red;
@@ -164,14 +165,14 @@ img{
     margin-left: 50px;
   }
 
-  .Dcontainer{
+.Dcontainer{
     display: grid;
     gap: 1rem;
     margin-left: 5%;
     margin-right: 0;
     grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
   }
-  .Downloader{
+.Downloader{
     display: none;
     width: 300px;
     height: 200px;
@@ -181,11 +182,11 @@ img{
     border-radius: 20px;
     transition-duration: 0.2s;
   }
-  .Downloader:-moz-drag-over{
+.Downloader:-moz-drag-over{
     transform: scale(110%);
     color: #fff;
   }
-  .Dinside{
+.Dinside{
     position: absolute;
     top: -3px;
     left: -4px;
@@ -196,7 +197,7 @@ img{
     color: #fff;
     text-align: center;
   }
-  .Doutside{
+.Doutside{
     position: relative;
     background-color:rgb(26, 25, 25) ;
     border: 2px solid white ;
@@ -295,7 +296,7 @@ justify-content: center;
   color: rgb(26, 25, 25);
   height: 25px;
   width: 195px;
-  transition-duration: 0.2s;
+  transition-duration: 0.4s;
   margin:0px 10px;
   border-radius: 10px;
   background-color: white;

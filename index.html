@@ -11,8 +11,7 @@
     <div class="pagecontainer">
         <div class="barraleft" id="topbar">
             <h3 class="modeswitch" id="mode"><div style="font-size: 37px; margin:-9px;" id="dontaskaboutthisshit">BACKLOGGD<div></h3>
-            <h3 id="test" class="btna">Test</h3>
-            <h3 id="btn" class="btna" >Load comparator</h3>
+            <h3 id="test" class="btna">Load</h3>
             <label for='csvFile' style="display:none ;"> 
                 <h3 class="btna" id="userfile" >Your csv file</h3>
                 <input style="display:none ;" class="btna" multiple="multiple" type="file" id="csvFile" accept=".csv" />
@@ -24,7 +23,7 @@
             <h3 class="btna" onclick="location.href = './about.html'">about</h3>
             
         </div>
-        <div style="display: flex; color: white; justify-content: center; ">
+        <div id="containerswitch" style="display: flex; color: white; justify-content: center; ">
 
             <h1 style="margin: 15px ;">Show ALL</h1>
             <label class="switch" style="margin-top: 20px;">
@@ -35,12 +34,12 @@
         </div>
         <div style="display: flex; justify-content: center; margin: 0;">
             <div class="titulo" id="searchBoxContainer" style="display: flex; flex-direction: column; max-height: 100px;" >
-                    <label for="name">Your Letterboxd ID:</label>
+                    <label for="name">Your ID:</label>
                         <input type="text" id="search" name="name" size="10">    
                     
             </div>
             <div class="titulo" id="searchBoxOtherContainer" style="display: flex; flex-direction: column; max-height: 100px;" >
-                <label for="name">Letterboxd ID to compare:</label>
+                <label for="name">ID to compare:</label>
                     <input type="text" id="searchOther"  name="name" size="10">    
                 
             </div>

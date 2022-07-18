@@ -22,7 +22,7 @@ var check1 = false;
 var check2 = false;
 const apikey = 'api_key=5625c97a465184ed5c6509459a4505fb';
 
-const btn = document.getElementById("btn");
+
 
 const topbar = document.getElementById("topbar");
 
@@ -53,45 +53,7 @@ console.log('DataofMovies2 Finished');
 
 // checks the mode the page is in. And then reads the files if in csv mode or launches the api if in id mode. Then launches the comparison function.
 // Leaving it here incase i want to use it in the future.
-btn.addEventListener("pointerdown", async function (e) {
-  topbar.className = 'barraleft shadowred ' ;
-  if(check === true){
-    e.preventDefault
-    let input = csvFile.files[0];
-    if(check1 === true){
-      input = dropfile;
-    }
-    let reader = new FileReader(); 
-    reader.onload = async function (input) {
-      let text = input.target.result;
-      let output = Papa.parse(text,papaconfig);
-      let csvtext = output.data;
-      CsvDataParsed = csvtext;
-      console.log(await DataofMovies(csvtext));
-      console.log(names.length);
-      await csvreader2();
-      await adddiv(); 
-      await comparator();
-       
-    };
-    // reader.readAsText(input);
-  }
-  else{
-    let member = textbox.value; 
-    let member2 = textboxOther.value;
-    console.log("You're:"+member);
-    console.log("Other is:"+member2);
-    let MemberData = await letterboxdAPicall(member);
-    MemberDataParsed = Papa.parse(MemberData,papaconfig).data;
-    let MemberDataOther = await letterboxdAPicall(member2);
-    MemberDataOtherParsed = Papa.parse(MemberDataOther,papaconfig).data;
-    await DataofMovies(MemberDataParsed);
-    await DataofMovies2(MemberDataOtherParsed);
-    await adddiv();
-    await comparator();
-  }
-  topbar.className = 'barraleft shadowgreen ' ;
-});
+
 
 
 // reads the second csv file. Leaving it here incase i want to use it in the future.
@@ -113,7 +75,7 @@ async function csvreader2(){
 // This scripts modifies and adds divs to the page
 
 function removedivs(){
- btn.style.display = 'none';
+
  document.getElementById("examplePoster").style.display = 'none';
 
 }
@@ -145,13 +107,13 @@ const textbox = document.getElementById('search');
 const textboxOther = document.getElementById('searchOther');
 
 // calls the python api and receives the data in csv
-async function letterboxdAPicall(memberAPI){
+async function letterboxdAPicall(member){
 
-  let memberjson = await fetch('http://127.0.0.1:8000/api/'+ memberAPI).then(response => response.json());
+  let memberjson = await fetch('https://erzgg8cp3a.execute-api.us-east-1.amazonaws.com/Prod/api/'+member,{headers:{'x-api-key':'0fg31ilvDCl0fdZfhum82clS7J1ad0j3booSddQb'}}).then(response => response.json());
   return memberjson;
 };
 async function backloggdAPIcall(member){
-  let memberjson = await fetch('http://localhost:8000/t/'+ member).then(response => response.json());
+  let memberjson = await fetch('https://erzgg8cp3a.execute-api.us-east-1.amazonaws.com/Prod/t/'+member,{headers:{'x-api-key':'0fg31ilvDCl0fdZfhum82clS7J1ad0j3booSddQb'}}).then(response => response.json());
   return memberjson;
 }
 
@@ -171,15 +133,14 @@ checkbox.addEventListener("change", function(){
 let root = document.documentElement;
 test.addEventListener("pointerdown", async function(){
 StartPage();
-// let memberjson = await fetch('http://127.0.0.1:8000/t/nidan').then(response => response.json());
-// let memberparsed = Papa.parse(memberjson,papaconfig).data;
-// console.log(memberparsed);
-
 });
 
 // this function loads all the functionality of the page. so i can use the same button for testing. im that kind of lazy.
 async function StartPage(){
   console.log('Started');
+  document.getElementById('searchBoxContainer').style.display = 'none';
+  document.getElementById('searchBoxOtherContainer').style.display = 'none';
+  document.getElementById('containerswitch').style.display = 'none';
   if(mode === false){
     let member = await letterboxdAPicall(textbox.value);
     let memberparsed = Papa.parse(member,papaconfig).data;
@@ -294,7 +255,7 @@ async function adddivtopages(array){
         if(mode === false){
           
           let x = await tmdbapi(array[i][j][0].Name);
-          img_cloned.src = "https://image.tmdb.org/t/p/w500"+ x.poster_path;
+          img_cloned.src = "https://image.tmdb.org/t/p/w342"+ x.poster_path;
           img_cloned.alt = array[i][j][0].Name;
           let info_cloned = info.cloneNode(true);
           info_cloned.innerHTML = x.overview;
@@ -336,8 +297,11 @@ function arraydivider(member,memberother){
     if(index !== -1){
     container.push([member[i],memberother[index]]);
     }
-    if(index === -1 && check === false){
+    if(index === -1 && check === false && mode === false){
       container.push([member[i],{Rating: 'Not Seen'}]);
+    }
+    else if(index === -1 && check === false && mode === true){
+      container.push([member[i],{Rating: 'Not Played'}]);
     }
     else if(index === -1 && check === true){
     
@@ -362,6 +326,8 @@ modeSwitch.addEventListener('pointerdown', function(){
     dontaskaboutthisshit.innerHTML = 'LETTERBOXD';
     document.querySelector('.barraleft').style = 'background-color: #ff9a00;';
     document.querySelector('.body').style = 'background-color: #00a2ff;';
+    document.querySelector('.modeswitch').style = 'color: #ff9a00;';
+    
   }
   else {
     mode = false;
@@ -369,8 +335,23 @@ modeSwitch.addEventListener('pointerdown', function(){
     dontaskaboutthisshit.innerHTML = 'BACKLOGGD';
     document.querySelector('.barraleft').style = 'background-color: #1a1919;';
     document.querySelector('.body').style = 'background-color: #00000;';
+    document.querySelector('.modeswitch').style = 'color: #1a1919;';
   }
 });
 
+// lazy load src for images
+function lazyload(){
+  let lazyImages = document.querySelectorAll('.lazy');
+  let active = false;
+  window.addEventListener('scroll', function(){
+    if(!active){
+      active = true;
+      setTimeout(function(){
+        checkImages(lazyImages);
+        active = false;
+      }, 200);
+    }
+  });
+}
 
 

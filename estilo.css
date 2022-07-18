@@ -21,6 +21,7 @@ min-height: 100%;
 .body{
  margin: 0px; padding: 0%;
  background-color: black;
+ transition-duration:0.4s ;
 }
 .barraleft{
     height: 10%;

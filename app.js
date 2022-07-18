@@ -333,6 +333,7 @@ modeSwitch.addEventListener('pointerdown', function(){
     mode = false;
     console.log('False')
     dontaskaboutthisshit.innerHTML = 'BACKLOGGD';
+    dontaskaboutthisshit.style.color = '#ff9a00;';
     document.querySelector('.barraleft').style = 'background-color: #1a1919;';
     document.querySelector('.body').style = 'background-color: #00000;';
     document.querySelector('.modeswitch').style = 'color: #1a1919;';

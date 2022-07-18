@@ -96,7 +96,7 @@ async function tmdbapi(x){
   }
   else{ return moviedata.results[0];}
  
-}
+};
 // api request end here
 
 

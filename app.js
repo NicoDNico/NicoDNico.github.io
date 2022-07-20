@@ -121,7 +121,7 @@ async function backloggdAPIcall(member){
 }
 async function IMDBapi(member){
   console.log('Starting IMDBapi');
-  let memberjson = await fetch('http://localhost:8000/test/nidan').then(response => response.json());
+  let memberjson = await fetch('http://localhost:8000/imdb/'+member).then(response => response.json());
   return memberjson;
 }
 

@@ -46,7 +46,7 @@ def get_backloggd(member: str):
     response = get_games(member)
     return response
 
-@app.get("/test/{member}")
+@app.get("/imdb/{member}")
 def get_test(member: str):
 
     global movies_imdb_name

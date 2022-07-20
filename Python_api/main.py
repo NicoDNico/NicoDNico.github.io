@@ -4,6 +4,8 @@ import pandas as pd
 from mangum import Mangum
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import re
+import math
 
 
 import time
@@ -40,13 +42,23 @@ def get_member(member: str):
     return response
 
 @app.get("/t/{member}")
-def get_test(member: str):
+def get_backloggd(member: str):
     response = get_games(member)
     return response
 
-def get_test2(member):
-    response = get_games(member)
-    return response
+@app.get("/test/{member}")
+def get_test(member: str):
+
+    global movies_imdb_name
+    global movies_imdb_url
+    global movies_imdb_rating 
+    movies_imdb_name = []
+    movies_imdb_url = []
+    movies_imdb_rating = []
+    get_imdb("https://www.imdb.com/user/ur49546000/ratings?sort=your_rating,desc&ratingFilter=0&mode=detail&ref_=undefined&lastPosition=0")
+    response = pd.DataFrame({'Name': movies_imdb_name,'Link': movies_imdb_url,'Rating': movies_imdb_rating})
+    print(response)
+    return response.to_csv(header=True, index=False)
 
 handler = Mangum(app)
 
@@ -153,6 +165,7 @@ def get_info(member):
     return moviesinfo.to_csv(header=True, index=False)
 
 def get_games(member):
+
     def get_rating(rating):
         # api gateway doesnt support match yet so fuck me cause i aint not learning no dictionaries.
         if rating == 'width:100%':
@@ -240,4 +253,36 @@ def get_games(member):
 
 
     return Games_data.to_csv(header=True, index=False)
+
+testeo = []
+def get_imdb(URL):
+    headersx = {"Accept-Language" : "en-US"}
+    content = requests.get(URL, headers=headersx)
+    soup = BeautifulSoup(content.text, 'html.parser')
+    body = soup.find('div', class_='lister')
+    pagination = body.find('div', class_='list-pagination')
+    paginationRange = pagination.find('span', class_='pagination-range').string
+    Range = re.findall(r'(\d+)(?!.*\d)', paginationRange).pop()
+    CheckPage = pagination.find('a', class_='next-page')['href']
+    List = body.find('div', class_='lister-list').find_all('div', class_='lister-item mode-detail')
+    for movie in List:
+        movie_name = movie.find('h3', class_='lister-item-header').find('a').text
+        movies_imdb_name.append(movie_name)
+        movie_link = movie.find('a')['href']
+        movie_url = 'https://www.imdb.com' + movie_link
+        movies_imdb_url.append(movie_url)
+        movie_rating = movie.find('div', class_='ipl-rating-star--other-user').find('span', class_='ipl-rating-star__rating').text
+        movies_imdb_rating.append(movie_rating)
+
+
+
+    if CheckPage == URL or CheckPage == '#':
+        print(CheckPage)
+        print("End of pages")
+    elif CheckPage != URL:
+        print(CheckPage)
+        print("More pages left")
+        get_imdb("https://www.imdb.com"+CheckPage)
+
+
 

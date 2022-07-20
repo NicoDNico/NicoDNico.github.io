@@ -6,21 +6,23 @@ import Papa from "papaparse"
 // prob also last project. 
 // But worry not this code is thankfully basic enough that its self explanatory /s. 
 
+
+// most of this variables are useeless but i dont exactly know wich ones so i left them.
 var names = [];
 var links = [];
 var ratin = [];
 var namesother = [];
 var ratinother = [];
-var MemberDataParsed = '';
-var MemberDataOtherParsed = '';
-var dropfile = [];
 var dropfile2 = [];
+// this variable is what determines if you look trough letterboxd or backlogd.
+var mode = false;
 
 const papaconfig = {header:true};
 const modeSwitch = document.getElementById('mode');
-var check1 = false;
-var check2 = false;
 const apikey = 'api_key=5625c97a465184ed5c6509459a4505fb';
+const UserPlataform = document.getElementById('UserPlataform');
+const OtherPlataform = document.getElementById('OtherPlataform');
+
 
 
 
@@ -108,12 +110,18 @@ const textboxOther = document.getElementById('searchOther');
 
 // calls the python api and receives the data in csv
 async function letterboxdAPicall(member){
-
+  console.log('Starting letterboxdAPIcall'); // this is just for debugging
   let memberjson = await fetch('https://erzgg8cp3a.execute-api.us-east-1.amazonaws.com/Prod/api/'+member,{headers:{'x-api-key':'0fg31ilvDCl0fdZfhum82clS7J1ad0j3booSddQb'}}).then(response => response.json());
   return memberjson;
 };
 async function backloggdAPIcall(member){
+  console.log('Starting backloggdAPIcall');
   let memberjson = await fetch('https://erzgg8cp3a.execute-api.us-east-1.amazonaws.com/Prod/t/'+member,{headers:{'x-api-key':'0fg31ilvDCl0fdZfhum82clS7J1ad0j3booSddQb'}}).then(response => response.json());
+  return memberjson;
+}
+async function IMDBapi(member){
+  console.log('Starting IMDBapi');
+  let memberjson = await fetch('http://localhost:8000/test/nidan').then(response => response.json());
   return memberjson;
 }
 
@@ -133,6 +141,7 @@ checkbox.addEventListener("change", function(){
 let root = document.documentElement;
 test.addEventListener("pointerdown", async function(){
 StartPage();
+
 });
 
 // this function loads all the functionality of the page. so i can use the same button for testing. im that kind of lazy.
@@ -141,11 +150,12 @@ async function StartPage(){
   document.getElementById('searchBoxContainer').style.display = 'none';
   document.getElementById('searchBoxOtherContainer').style.display = 'none';
   document.getElementById('containerswitch').style.display = 'none';
+  document.getElementById('loaderAnimation').style.display = 'flex';
   if(mode === false){
-    let member = await letterboxdAPicall(textbox.value);
+    let member = ((UserPlataform.options[UserPlataform.selectedIndex].value == 'Letterboxd') ? await letterboxdAPicall(textbox.value) : await IMDBapi(textbox.value));
     let memberparsed = Papa.parse(member,papaconfig).data;
     console.log('Member parsed')
-    let memberother = await letterboxdAPicall(textboxOther.value);
+    let memberother = ((OtherPlataform.options[OtherPlataform.selectedIndex].value == 'Letterboxd') ? await letterboxdAPicall(textboxOther.value) : await IMDBapi(textboxOther.value))
     let memberotherparsed = Papa.parse(memberother,papaconfig).data;
     console.log(memberparsed);
     console.log(memberotherparsed);
@@ -176,7 +186,7 @@ async function StartPage(){
     document.getElementById('pagemoviecontainer1').style = 'display: grid;';
 
   }
- 
+  document.getelementById('loaderAnimation').style.display = 'flex';
 
 
 
@@ -191,7 +201,8 @@ function arraymaker(number){
   return array;
 }
 
-
+// This makes the paginator. 
+//It counts the elements in an array that already hold the movies/games in groups of 72.
 function addpaginator(arrayx){
  let paginatorContainer = document.getElementById("paginatorContainer");
  //pagesN is pagesNumber
@@ -315,7 +326,7 @@ function arraydivider(member,memberother){
   return matrix;
 }
 
-var mode = false;
+
 modeSwitch.addEventListener('pointerdown', function(){
   const dontaskaboutthisshit = document.getElementById('dontaskaboutthisshit');
   if (mode == false){

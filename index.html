@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SupercoolStuff</title>
     <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="Stolen.css">
 </head>
 <body class="body">
     <div class="pagecontainer">
@@ -23,6 +24,10 @@
             <h3 class="btna" onclick="location.href = './about.html'">about</h3>
             
         </div>
+        <div id="loaderAnimation" style="display: none; flex-direction: column; align-items: center;  ">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            <h4 style="color: darkgrey ;">It may take a while depending on how many Movies/Games each member has. Also kinda important but if you have more than 2k films or 1.4k games it will fail and you WILL NOT be informed (im working on it... prob) if it takes more than 2m Relod the page and try again</h4>
+        </div>
         <div id="containerswitch" style="display: flex; color: white; justify-content: center; ">
 
             <h1 style="margin: 15px ;">Show ALL</h1>
@@ -35,12 +40,20 @@
         <div style="display: flex; justify-content: center; margin: 0;">
             <div class="titulo" id="searchBoxContainer" style="display: flex; flex-direction: column; max-height: 100px;" >
                     <label for="name">Your ID:</label>
-                        <input type="text" id="search" name="name" size="10">    
+                    <select class="form-control" id="UserPlataform" name="StudentGender">
+                        <option>Letterboxd</option> 
+                        <option>IMDB</option> 
+                    </select>
+                    <input type="text" id="search" name="name" size="10">    
                     
             </div>
             <div class="titulo" id="searchBoxOtherContainer" style="display: flex; flex-direction: column; max-height: 100px;" >
                 <label for="name">ID to compare:</label>
-                    <input type="text" id="searchOther"  name="name" size="10">    
+                <select class="form-control" id="OtherPlataform" name="StudentGender">
+                    <option>Letterboxd</option> 
+                    <option>IMDB</option> 
+                </select>
+                <input type="text" id="searchOther"  name="name" size="10">    
                 
             </div>
         </div>
